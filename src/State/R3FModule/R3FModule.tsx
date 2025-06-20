@@ -9,10 +9,12 @@ const R3FModule = ({ set }: globalStateApiType) => {
     },
     updatePoint: (index: number, data: any) =>
       set((state) => {
-        const newPoints = [...state.points];
-        newPoints[index] = { ...newPoints[index], ...data };
+        const updatePoints = [...state.points];
+        if (index >= 0 && index < updatePoints.length) {
+          updatePoints[index] = { ...updatePoints[index], ...data };
+        }
 
-        return { points: newPoints };
+        return { points: updatePoints };
       }),
   };
 };

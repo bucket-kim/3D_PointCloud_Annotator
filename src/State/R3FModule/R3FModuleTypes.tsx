@@ -2,6 +2,8 @@ export type Point = {
   x: number;
   y: number;
   z: number;
+  label?: string;
+  selected?: boolean;
 };
 
 export interface R3FModuleTypes {

@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from 'react';
+import { Fragment, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { shallow } from 'zustand/shallow';
 import { useGlobalState } from '../../State/useGlobalState';
@@ -15,6 +15,10 @@ const PointCloud = () => {
     const positions = new Float32Array(points.flatMap((p) => [p.x, p.y, p.z]));
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     return geometry;
+  }, [points]);
+
+  useEffect(() => {
+    console.log(points);
   }, [points]);
 
   return (

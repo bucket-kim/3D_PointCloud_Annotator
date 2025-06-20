@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useRef } from 'react';
 import * as THREE from 'three';
 import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js';
 
@@ -9,17 +9,16 @@ interface FileUploaderType {
 const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [fileName, setFileName] = useState();
-
   const handlePLYFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (!files) return;
     const file = files[0];
     if (!file) return;
 
+    const fileName = file.name.replace(/\.[^/.]+$/, '');
+
     const url = URL.createObjectURL(file);
 
-    console.log(file.name);
     const plyLoader = new PLYLoader();
 
     plyLoader.load(
@@ -32,6 +31,7 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
             x: position.getX(i),
             y: position.getY(i),
             z: position.getZ(i),
+            label: fileName,
           });
         }
         onLoad(points);
@@ -44,11 +44,6 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
       },
     );
   };
-
-  useEffect(() => {
-    if (!inputRef.current) return;
-    console.log(inputRef.current);
-  }, []);
 
   return (
     <input
