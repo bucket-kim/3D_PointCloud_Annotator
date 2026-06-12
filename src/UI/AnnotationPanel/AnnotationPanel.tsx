@@ -36,7 +36,6 @@ const AnnotationPanel = () => {
                 {Object.keys(annotations).length > 0 && (
                     <select name="labels" id="labels">
                         {Object.values(annotations).map((annotation, index) => {
-                            console.log(annotation)
                             return (
                                 <option key={index} value={annotation.label}>{annotation.label}</option>
                             )

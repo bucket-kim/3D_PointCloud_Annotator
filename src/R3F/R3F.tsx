@@ -2,8 +2,9 @@ import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useRef } from 'react';
 import * as THREE from 'three';
-import PointCloud from './PointCloud/PointCloud';
+import PointCloud from './Entities/PointCloud/PointCloud';
 import R3FStyleContainer from './R3FStyleContainer';
+import AnnotationLayer from './Entities/AnnotationLayer/AnnotationLayer';
 
 const R3F = () => {
   const cameraPos = useRef<THREE.Vector3>(new THREE.Vector3(3, 4, 5));
@@ -23,6 +24,7 @@ const R3F = () => {
       }}>
         <OrbitControls />
         <PointCloud />
+        <AnnotationLayer />
       </Canvas>
     </R3FStyleContainer>
   );

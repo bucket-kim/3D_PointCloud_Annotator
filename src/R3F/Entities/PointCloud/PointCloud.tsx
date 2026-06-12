@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { shallow } from 'zustand/shallow';
-import { useGlobalState } from '../../State/useGlobalState';
+import { useGlobalState } from '../../../State/useGlobalState';
 import fragmentShader from './PointMaterial/fragment.glsl?raw';
 import vertexShader from './PointMaterial/vertex.glsl?raw';
 import { ThreeEvent } from '@react-three/fiber';
@@ -108,7 +108,7 @@ const PointCloud = () => {
       {boundingBox && (
         <mesh position={[boundingBox.center.x, boundingBox.center.y, boundingBox.center.z]} rotation={[Math.PI / -2, 0, 0]} scale={2}>
           <boxGeometry args={[boundingBox.size.x, boundingBox.size.y, boundingBox.size.z]} />
-          <meshBasicMaterial wireframe />
+          <meshBasicMaterial wireframe color={"#000000"} />
         </mesh>
       )}
     </Fragment>

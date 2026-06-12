@@ -56,7 +56,7 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
         pointIndices: [...selectedIndices]
       }
 
-      set({ annotations: { ...annotations, [id]: newAnnotation } })
+      set({ annotations: { ...annotations, [id]: newAnnotation }, selectedIndices: new Set(), boundingBox: null })
     }
   };
 
