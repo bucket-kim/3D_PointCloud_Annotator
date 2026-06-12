@@ -10,7 +10,17 @@ const R3F = () => {
 
   return (
     <R3FStyleContainer>
-      <Canvas camera={{ position: cameraPos.current }}>
+      <Canvas camera={{ position: cameraPos.current }} raycaster={{
+        params: {
+          Points: { threshold: 0.05 },
+          Mesh: undefined,
+          Line: {
+            threshold: 0
+          },
+          LOD: undefined,
+          Sprite: undefined
+        }
+      }}>
         <OrbitControls />
         <PointCloud />
       </Canvas>

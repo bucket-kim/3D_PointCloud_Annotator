@@ -1,7 +1,7 @@
 import { globalStateApiType } from '../GlobalStateTypes';
-import { Point } from './R3FModuleTypes';
+import { Annotation, boudingBoxType, Point } from './R3FModuleTypes';
 
-const R3FModule = ({ set }: globalStateApiType) => {
+const R3FModule = ({ set, get }: globalStateApiType) => {
   return {
     points: [],
     setPoints: (points: Point[]) => {
@@ -16,7 +16,50 @@ const R3FModule = ({ set }: globalStateApiType) => {
 
         return { points: updatePoints };
       }),
+
+    selectedIndices: new Set<number>(),
+    setSelectedIndices: (indicies: Set<number>) => {
+      set({ selectedIndices: indicies })
+    },
+    toggleSelectedIndex: (index: number) => {
+      set((state) => {
+        const next = new Set(state.selectedIndices)
+
+        if (next.has(index)) {
+          next.delete(index)
+        } else {
+          next.add(index)
+        }
+
+        return { selectedIndices: next }
+      })
+    },
+
+    boundingBox: null,
+    setBoundingBox: (boundingBox: boudingBoxType | null) => {
+      set({ boundingBox: boundingBox })
+    },
+
+    annotations: {},
+    addAnnotation: (label: string) => {
+      const { selectedIndices, boundingBox, annotations } = get()
+
+      if (!boundingBox) return;
+
+      const id = Object.keys(annotations).length
+
+      const newAnnotation: Annotation = {
+        id,
+        label,
+        center: boundingBox.center,
+        size: boundingBox.size,
+        pointIndices: [...selectedIndices]
+      }
+
+      set({ annotations: { ...annotations, [id]: newAnnotation } })
+    }
   };
+
 };
 
 export { R3FModule };
