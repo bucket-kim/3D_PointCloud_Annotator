@@ -5,7 +5,14 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
   return {
     points: [],
     setPoints: (points: Point[]) => {
-      set({ points: points });
+      set({
+        points,
+        annotations: {},
+        past: [],
+        future: [],
+        selectedIndices: new Set(),
+        boundingBox: null
+      });
     },
     updatePoint: (index: number, data: any) =>
       set((state) => {
@@ -34,6 +41,13 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
         return { selectedIndices: next }
       })
     },
+    addSelectedIndex: (index: number) => {
+      set((state) => {
+        const next = new Set(state.selectedIndices)
+        next.add(index)
+        return { selectedIndices: next }
+      })
+    },
 
     boundingBox: null,
     setBoundingBox: (boundingBox: boudingBoxType | null) => {
@@ -41,8 +55,10 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
     },
 
     annotations: {},
+    past: [],
+    future: [],
     addAnnotation: (label: string) => {
-      const { selectedIndices, boundingBox, annotations } = get()
+      const { selectedIndices, boundingBox, annotations, past } = get()
 
       if (!boundingBox) return;
 
@@ -56,7 +72,46 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
         pointIndices: [...selectedIndices]
       }
 
-      set({ annotations: { ...annotations, [id]: newAnnotation }, selectedIndices: new Set(), boundingBox: null })
+      set({
+        annotations: { ...annotations, [id]: newAnnotation },
+        past: [...past, annotations],
+        future: [],
+        selectedIndices: new Set(),
+        boundingBox: null
+      })
+    },
+
+    undo: () => {
+      const { past, future, annotations } = get()
+      if (past.length === 0) return;
+
+      const nextPast = [...past];
+      const previous = nextPast.pop();
+
+      set({
+        annotations: previous,
+        past: nextPast,
+        future: [...future, annotations],
+        selectedIndices: new Set(),
+        boundingBox: null
+      })
+    },
+
+    redo: () => {
+      const { past, future, annotations } = get();
+      if (future.length === 0) return;
+
+      const nextFuture = [...future];
+      const redoFuture = nextFuture.pop()
+
+
+      set({
+        annotations: redoFuture,
+        past: [...past, annotations],
+        future: nextFuture,
+        selectedIndices: new Set(),
+        boundingBox: null
+      })
     }
   };
 

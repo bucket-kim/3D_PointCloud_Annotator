@@ -1,0 +1,51 @@
+{
+  "name": "trend_join_long_scanner",
+  "version": 1,
+  "description": "Spec for the Trend Join Long day-trading entry scanner. Driven inside a Claude Code session that has the TradingView MCP; not runnable by a bare shell or the standalone CLI (no MCP there).",
+  "universe": ["AMD", "NVDA", "MU"],
+  "prereq": {
+    "tool": "tv_health_check",
+    "require": {"cdp_connected": true, "api_available": true},
+    "on_fail": "Push a one-line alert telling the user to launch TradingView with: open -a TradingView --args --remote-debugging-port=9222, then stop."
+  },
+  "time_gate": {
+    "timezone": "America/New_York",
+    "scan_only_between": ["10:00", "15:30"],
+    "note": "The loop further restricts firing to 10:00-14:00 weekdays (see loop.window)."
+  },
+  "per_ticker": {
+    "sequential": true,
+    "steps": [
+      "chart_set_symbol(bare ticker, e.g. AMD)",
+      "chart_set_timeframe('D'); data_get_ohlcv(count=210) -> prev_daily_high=last bar high; prev_daily_close=last bar close; sma200=mean(close of last 200 bars)",
+      "quote_get -> curr_px = last price",
+      "chart_set_timeframe('1'); data_get_ohlcv(count=400) -> pmh=max high where today 04:00<=t<09:30 ET; today_hod=max high where today 09:30<=t<now, excluding current bar"
+    ],
+    "evaluate": {
+      "daily_breakout": "(curr_px > prev_daily_high) AND (prev_daily_close > sma200)",
+      "intraday_breakout": "(curr_px > pmh) AND (curr_px > today_hod)",
+      "result": "PASS if both true; else fail_daily if daily_breakout false; else fail_intraday"
+    }
+  },
+  "output": {
+    "file_pattern": "./tjl_watchlist_YYYY-MM-DD_HHMMET.json",
+    "schema": {
+      "scanned_at": "ISO-8601 UTC",
+      "candidates_checked": 3,
+      "hits": [{"symbol": "", "curr_price": 0, "prev_daily_high": 0, "sma200": 0, "pmh": 0, "today_hod": 0}],
+      "all_results": [{"symbol": "", "result": "PASS | fail_daily | fail_intraday"}]
+    },
+    "print": "one line per ticker: 'TICKER: result — reason'"
+  },
+  "loop": {
+    "cadence": "every 30 minutes",
+    "window": {"timezone": "America/New_York", "days": "Mon-Fri", "from": "10:00", "to": "14:00"},
+    "mechanism": "session-bound durable cron (.claude/scheduled_tasks.json); fires only while a Claude Code session is open and idle",
+    "state_file": ".tjl_loop_state.json",
+    "notification": {
+      "tool": "PushNotification",
+      "ping_when": ["first run of the day", "a NEW PASS symbol not already in today's hits_seen"],
+      "otherwise": "stay silent (still save the watchlist file and update state)"
+    }
+  }
+}

@@ -31,10 +31,16 @@ export interface R3FModuleTypes {
   selectedIndices: Set<number>;
   setSelectedIndices: (indices: Set<number>) => void;
   toggleSelectedIndex: (index: number) => void;
+  addSelectedIndex: (index: number) => void;
 
   boundingBox: boudingBoxType | null;
   setBoundingBox: (boudingBox: boudingBoxType | null) => void;
 
-  annotations: Record<number, Annotation>
+  annotations: Record<number, Annotation>;
   addAnnotation: (label: string) => void;
+  past: Record<number, Annotation>[];
+  future: Record<number, Annotation>[];
+  undo: () => void;
+  redo: () => void;
+
 }

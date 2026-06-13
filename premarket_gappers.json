@@ -1,0 +1,75 @@
+{
+  "name": "premarket_gappers_scanner",
+  "version": 1,
+  "description": "Declarative spec for a premarket gappers scan. This file is configuration/documentation only; it does not execute on its own. Run it with an LLM agent that has a WebFetch-style tool (e.g. `claude -p \"run the scan defined in premarket_gappers.json\" --allowedTools WebFetch`).",
+  "data_source": {
+    "tool": "WebFetch",
+    "url": "https://finance.yahoo.com/markets/stocks/gainers/",
+    "parse_fields": {
+      "symbol": "ticker symbol",
+      "price": "last price as a number",
+      "gap_pct": "percent change / gap percent as a number (e.g. 7.5, not \"7.5%\")",
+      "premarket_volume": "volume as an integer; expand abbreviations (1.2M -> 1200000, 850K -> 850000, 2.3B -> 2300000000)"
+    },
+    "notes": "Yahoo's gainers table exposes regular-session volume, not a true premarket figure; premarket_volume is populated from that column."
+  },
+  "filters": {
+    "gap_pct": { "operator": ">", "value": 5 },
+    "price": { "operator": ">", "value": 3 },
+    "premarket_volume": { "operator": ">", "value": 50000 }
+  },
+  "ranking": {
+    "sort_by": "gap_pct",
+    "order": "descending",
+    "limit": 10,
+    "limit_reason": "cap at 10 for runtime"
+  },
+  "news_catalyst": {
+    "tool": "WebFetch",
+    "url_template": "https://www.benzinga.com/quote/{TICKER}",
+    "prompt_template": "What recent news or catalyst is driving {TICKER} stock today? Return a one-sentence summary, then up to 2 recent headlines verbatim. Just the data — no commentary.",
+    "do_not_use": {
+      "url": "https://finance.yahoo.com/quote/{TICKER}/news/",
+      "reason": "returns HTTP 503 reliably; Benzinga is the working source"
+    },
+    "on_failure": {
+      "scope": "per_ticker",
+      "behavior": "set catalyst=null and headlines=[] for that ticker; do not abort the whole scan",
+      "applies_when": "fetch fails OR no ticker-specific catalyst is found (generic/unrelated market headlines do not count)"
+    },
+    "headlines_max": 2
+  },
+  "output": {
+    "file_pattern": "./premarket_gappers_YYYY-MM-DD.json",
+    "schema": {
+      "scanned_at": "ISO-8601 UTC timestamp, e.g. 2026-06-13T15:24:08Z",
+      "gappers": [
+        {
+          "rank": "integer, 1-based, in gap_pct-descending order",
+          "symbol": "string",
+          "price": "number",
+          "gap_pct": "number",
+          "premarket_volume": "integer",
+          "catalyst": "string or null",
+          "headlines": "array of up to 2 verbatim strings (empty array if none)"
+        }
+      ]
+    },
+    "example_row": {
+      "rank": 1,
+      "symbol": "AAPL",
+      "price": 175.20,
+      "gap_pct": 7.5,
+      "premarket_volume": 1200000,
+      "catalyst": "Beat Q1 earnings, raised FY guidance",
+      "headlines": ["Apple Reports Strong Q1", "Analysts Boost Price Targets"]
+    }
+  },
+  "summary_line": {
+    "format": "Premarket Gappers: N names. Top: TICKER1 (X%) — catalyst1, TICKER2 (Y%) — catalyst2, TICKER3 (Z%) — catalyst3",
+    "top_n": 3,
+    "when": "printed after the output file is saved"
+  },
+  "runtime_expectation_seconds": [60, 90],
+  "run_once": true
+}

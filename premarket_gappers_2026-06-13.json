@@ -1,0 +1,116 @@
+{
+  "scanned_at": "2026-06-13T15:24:08Z",
+  "gappers": [
+    {
+      "rank": 1,
+      "symbol": "ROKU",
+      "price": 143.66,
+      "gap_pct": 20.08,
+      "premarket_volume": 14243000,
+      "catalyst": "Roku shares are trading higher following positive analyst coverage and a strong quarterly earnings beat with raised guidance.",
+      "headlines": [
+        "Roku Rewinds Doubters With Ad-Fueled Earnings Beat",
+        "Roku Stock Up On Q1 Double Beat And Lifted Guidance"
+      ]
+    },
+    {
+      "rank": 2,
+      "symbol": "PLBL",
+      "price": 7.75,
+      "gap_pct": 17.51,
+      "premarket_volume": 242332,
+      "catalyst": null,
+      "headlines": []
+    },
+    {
+      "rank": 3,
+      "symbol": "MAAS",
+      "price": 14.86,
+      "gap_pct": 15.73,
+      "premarket_volume": 158703,
+      "catalyst": "Maase shares are rising following the completion of its Huazhi Future acquisition and a major mobile charging robot delivery expanding into Southwest China.",
+      "headlines": [
+        "Maase Stock Gains On Completion Of Huazhi Future Acquisition",
+        "What's Behind The Jump In Maase Inc. Stock?"
+      ]
+    },
+    {
+      "rank": 4,
+      "symbol": "ALMS",
+      "price": 24.15,
+      "gap_pct": 15.55,
+      "premarket_volume": 2239000,
+      "catalyst": "Alumis stock is volatile as investors lock in large yearly gains following a major share sale announcement and bullish analyst forecasts.",
+      "headlines": [
+        "Why Is Alumis Stock Falling Monday?",
+        "What's Going On With Alumis Stock Thursday?"
+      ]
+    },
+    {
+      "rank": 5,
+      "symbol": "ELVN",
+      "price": 46.13,
+      "gap_pct": 14.30,
+      "premarket_volume": 5767000,
+      "catalyst": "Enliven Therapeutics' stock surged following positive early-stage trial results for its leukemia treatment candidate.",
+      "headlines": [
+        "Enliven Therapeutics Early Leukemia Drug Results Impress, Stock Soars",
+        "Tiny Biotech Terns Takes Aim At Novartis' Leukemia Blockbuster"
+      ]
+    },
+    {
+      "rank": 6,
+      "symbol": "POET",
+      "price": 12.53,
+      "gap_pct": 11.38,
+      "premarket_volume": 31057000,
+      "catalyst": "POET Technologies shares moved sharply on a $400 million capital raise and a short-seller report alleging fraudulent partnerships.",
+      "headlines": [
+        "POET Technologies Shares Are Sliding: What's Driving The Action?",
+        "What's Going On With POET Stock On Wednesday?"
+      ]
+    },
+    {
+      "rank": 7,
+      "symbol": "ARM",
+      "price": 380.81,
+      "gap_pct": 11.27,
+      "premarket_volume": 15778000,
+      "catalyst": "ARM stock is rallying on a wave of analyst price-target upgrades driven by optimism around agentic AI hardware demand.",
+      "headlines": [
+        "Arm Holdings Rallies As Agentic AI Spark Triggers Wave Of Wall Street Upgrades",
+        "NVIDIA Obliterates The Boring PC Era"
+      ]
+    },
+    {
+      "rank": 8,
+      "symbol": "AXTI",
+      "price": 97.18,
+      "gap_pct": 10.01,
+      "premarket_volume": 9082000,
+      "catalyst": null,
+      "headlines": []
+    },
+    {
+      "rank": 9,
+      "symbol": "FRO",
+      "price": 39.07,
+      "gap_pct": 9.81,
+      "premarket_volume": 3976000,
+      "catalyst": "Geopolitical tensions around the Strait of Hormuz and strong tanker market dynamics are driving Frontline stock higher.",
+      "headlines": [
+        "Trump's Hormuz Warning Could Be A Surprise Catalyst For Tanker Stocks",
+        "Frontline CEO Says Hormuz Chaos Supercharged Tanker Profits"
+      ]
+    },
+    {
+      "rank": 10,
+      "symbol": "TGB",
+      "price": 7.50,
+      "gap_pct": 9.49,
+      "premarket_volume": 5614000,
+      "catalyst": null,
+      "headlines": []
+    }
+  ]
+}

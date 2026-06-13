@@ -16,7 +16,7 @@ const AnnotationLayer = () => {
             {Object.keys(annotations).length > 0 && (
                 Object.values(annotations).map((box) => (
 
-                    <mesh key={box.id} position={[box.center.x, box.center.y, box.center.z]} rotation={[Math.PI / -2, 0, 0]} scale={2}>
+                    <mesh key={box.id} position={[box.center.x, box.center.y, box.center.z]} >
                         <boxGeometry args={[box.size.x, box.size.y, box.size.z]} />
                         <meshBasicMaterial wireframe color="#00ff00" />
                     </mesh>

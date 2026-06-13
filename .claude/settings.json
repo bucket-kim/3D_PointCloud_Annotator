@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'D=$(TZ=America/New_York date +%u); T=$(TZ=America/New_York date +%H%M); if [ \"$D\" -le 5 ] && [ \"$T\" -ge 0955 ] && [ \"$T\" -le 1400 ]; then echo \"[auto-rearm] Weekday market hours (NY $T). If this session has the TradingView MCP, re-arm the Trend Join Long scanner per tjl_scanner.json: CronCreate the every-30-min 10:00-14:00 Mon-Fri loop with notification gating, then run one tick.\"; fi'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
