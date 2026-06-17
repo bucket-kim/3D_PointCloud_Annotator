@@ -49,6 +49,14 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
       })
     },
 
+    removeSelectedIndex: (index: number) => {
+      set((state) => {
+        const next = new Set(state.selectedIndices)
+        next.delete(index)
+        return { selectedIndices: next }
+      })
+    },
+
     boundingBox: null,
     setBoundingBox: (boundingBox: boudingBoxType | null) => {
       set({ boundingBox: boundingBox })

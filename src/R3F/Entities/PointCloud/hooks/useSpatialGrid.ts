@@ -1,10 +1,11 @@
 import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import useGroundCutoff from '../../../../Handler/useGroundCutoff';
 
-const CELL_SIZE = 0.1;
+const CELL_SIZE = 1;
 const MAX_DISTANCE = 50;
-const THRESHOLD = 0.05;
+const THRESHOLD = 0.5;
 
 export const useSpatialGrid = (
   points: { x: number; y: number; z: number }[],
@@ -16,6 +17,8 @@ export const useSpatialGrid = (
 
   const cellKey = (x: number, y: number, z: number) =>
     `${Math.floor(x / CELL_SIZE)},${Math.floor(y / CELL_SIZE)},${Math.floor(z / CELL_SIZE)}`;
+
+  const groundCutOff = useGroundCutoff(points);
 
   useEffect(() => {
     grid.current.clear();
@@ -52,6 +55,7 @@ export const useSpatialGrid = (
 
     candidates.forEach((index) => {
       const p = points[index];
+      if (p.y < groundCutOff) return;
       const distance = raycaster.ray.distanceToPoint(
         new THREE.Vector3(p.x, p.y, p.z),
       );

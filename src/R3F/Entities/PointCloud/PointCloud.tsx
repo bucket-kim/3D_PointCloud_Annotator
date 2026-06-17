@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 import { shallow } from 'zustand/shallow';
-import { ThreeEvent } from '@react-three/fiber';
 import { throttle } from 'lodash';
 import { useGlobalState } from '../../../State/useGlobalState';
 import fragmentShader from './PointMaterial/fragment.glsl?raw';
@@ -10,21 +9,15 @@ import { usePointGeometry } from './hooks/usePointGeometry';
 import { useSpatialGrid } from './hooks/useSpatialGrid';
 import { useBoundingBox } from './hooks/useBoundingBox';
 import BoundingBox from './BoundingBox';
-
-const pointMaterial = new THREE.ShaderMaterial({
-  uniforms: {
-    color: { value: new THREE.Color(0x0000ff) },
-    size: { value: 1.0 },
-  },
-  vertexShader,
-  fragmentShader,
-});
+import useGroundCutoff from '../../../Handler/useGroundCutoff';
+import { ThreeEvent } from '@react-three/fiber';
 
 const PointCloud = () => {
-  const { points, addSelectedIndex, selectedIndices, boundingBox, setBoundingBox } = useGlobalState(
+  const { points, addSelectedIndex, removeSelectedIndex, selectedIndices, boundingBox, setBoundingBox } = useGlobalState(
     (state) => ({
       points: state.points,
       addSelectedIndex: state.addSelectedIndex,
+      removeSelectedIndex: state.removeSelectedIndex,
       selectedIndices: state.selectedIndices,
       boundingBox: state.boundingBox,
       setBoundingBox: state.setBoundingBox,
@@ -36,14 +29,40 @@ const PointCloud = () => {
   const { getPointAtCursor } = useSpatialGrid(points);
   useBoundingBox(points, selectedIndices, setBoundingBox);
 
+  const groundCutOff = useGroundCutoff(points)
+
+
+  const pointMaterial = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        color: { value: new THREE.Color(0x0000ff) },
+        size: { value: 1.0 },
+        groundCutOff: { value: groundCutOff }
+      },
+      vertexShader,
+      fragmentShader,
+    })
+  }, []);
+
+  useEffect(() => {
+    pointMaterial.uniforms.groundCutOff.value = groundCutOff;
+  }, [groundCutOff, pointMaterial]);
+
   const handlePointerMove = useMemo(
     () =>
-      throttle(() => {
+      throttle((e: ThreeEvent<PointerEvent>) => {
         const index = getPointAtCursor();
+        const altKey = e.altKey
+
         if (index === null) return;
-        addSelectedIndex(index);
+
+        if (altKey) {
+          removeSelectedIndex(index)
+        } else {
+          addSelectedIndex(index);
+        }
       }, 100),
-    [getPointAtCursor],
+    [getPointAtCursor, addSelectedIndex, removeSelectedIndex],
   );
 
   useEffect(() => () => handlePointerMove.cancel(), [handlePointerMove]);

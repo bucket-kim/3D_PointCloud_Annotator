@@ -33,6 +33,8 @@ export interface R3FModuleTypes {
   toggleSelectedIndex: (index: number) => void;
   addSelectedIndex: (index: number) => void;
 
+  removeSelectedIndex: (index: number) => void;
+
   boundingBox: boudingBoxType | null;
   setBoundingBox: (boudingBox: boudingBoxType | null) => void;
 
