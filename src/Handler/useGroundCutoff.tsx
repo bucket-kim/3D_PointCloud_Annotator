@@ -35,7 +35,7 @@ const useGroundCutoff = (points: Point[]) => {
 
         const groundHeight = groundBinIndex * BIN_SIZE + minY;
 
-        const groundCutOff = groundHeight + .2;
+        const groundCutOff = groundHeight + .25;
 
         return groundCutOff;
 

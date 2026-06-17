@@ -18,7 +18,18 @@ const UI = () => {
   }, shallow);
 
   const handleExport = () => {
-    const data = JSON.stringify(Object.values(annotations), null, 2);
+
+    const exportData = Object.values(annotations).map((annotation) => {
+      return {
+        id: annotation.id,
+        category: annotation.label,
+        center: annotation.center,
+        dimensions: annotation.size,
+        yaw: 0
+      }
+    })
+
+    const data = JSON.stringify(exportData, null, 2);
 
     const blob = new Blob([data], { type: "application/json" })
 
