@@ -10,6 +10,25 @@ A browser-based annotation tool for 3D LiDAR point clouds — load a real sensor
 
 ---
 
+## Data Attribution
+
+The sample point cloud included in this demo is from the **KITTI Vision Benchmark Suite**
+(object detection dataset), copyright Andreas Geiger, Philip Lenz, Christoph Stiller, and
+Raquel Urtasun.
+
+The KITTI dataset is published under the **Creative Commons Attribution-NonCommercial-ShareAlike
+3.0 License** (CC BY-NC-SA 3.0). This demo is a non-commercial portfolio project, used with
+attribution under those terms.
+
+Citation:
+
+> A. Geiger, P. Lenz, and R. Urtasun.
+> "Are we ready for Autonomous Driving? The KITTI Vision Benchmark Suite."
+> Conference on Computer Vision and Pattern Recognition (CVPR), 2012.
+
+Dataset: https://www.cvlibs.net/datasets/kitti/
+License: https://creativecommons.org/licenses/by-nc-sa/3.0/
+
 ## What it does
 
 This tool replicates the human-annotation step of an autonomous-vehicle perception pipeline: raw LiDAR scans go in, human-labeled bounding boxes come out, ready to feed a training pipeline.
