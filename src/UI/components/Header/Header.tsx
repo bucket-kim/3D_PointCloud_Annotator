@@ -69,38 +69,34 @@ const Header = () => {
         </div>
 
         <div className="header-right-container">
-          {points.length === 0 ? (
-            <div>
-              <FileUploader onLoad={setPoints} />
-            </div>
-          ) : (
-            // Object.values(annotations).length === 0
-            <div className="header-right-container">
-              <div className="action-buttons">
-                <Button
-                  handleClick={undo}
-                  buttonDisable={past.length === 0}
-                  buttonLabel="Undo"
-                  type="secondary"
-                  icon="/img/svg/undo.svg"
-                />
-                <Button
-                  handleClick={redo}
-                  buttonDisable={future.length === 0}
-                  buttonLabel="Redo"
-                  type="secondary"
-                  icon="/img/svg/redo.svg"
-                />
-              </div>
+          <div>
+            <FileUploader onLoad={setPoints} />
+          </div>
+          <div className="header-right-container">
+            <div className="action-buttons">
               <Button
-                handleClick={handleExport}
-                buttonLabel={'Export Annotations'}
-                buttonDisable={Object.values(annotations).length === 0}
-                type="primary"
-                icon="/img/svg/export.svg"
+                handleClick={undo}
+                buttonDisable={past.length === 0}
+                buttonLabel="Undo"
+                type="secondary"
+                icon="/img/svg/undo.svg"
+              />
+              <Button
+                handleClick={redo}
+                buttonDisable={future.length === 0}
+                buttonLabel="Redo"
+                type="secondary"
+                icon="/img/svg/redo.svg"
               />
             </div>
-          )}
+            <Button
+              handleClick={handleExport}
+              buttonLabel={'Export Annotations'}
+              buttonDisable={Object.values(annotations).length === 0}
+              type="primary"
+              icon="/img/svg/export.svg"
+            />
+          </div>
         </div>
       </main>
       <Tips />

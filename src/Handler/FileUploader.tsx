@@ -1,15 +1,15 @@
-import { ChangeEvent, FC, useRef } from 'react';
-import { FileUploaderStyleContainer } from './FileUploaderStyleContainer';
+import { ChangeEvent, FC, useEffect, useRef } from 'react';
 import { useGlobalState } from '../State/useGlobalState';
+import { FileUploaderStyleContainer } from './FileUploaderStyleContainer';
 
-interface pointData {
-  x: number;
-  y: number;
-  z: number;
-  label: string;
-}
+// interface pointData {
+//   x: number;
+//   y: number;
+//   z: number;
+//   label: string;
+// }
 
-type PointArray = pointData[]
+// type PointArray = pointData[];
 
 interface FileUploaderType {
   onLoad: (points: { x: number; y: number; z: number }[]) => void;
@@ -20,9 +20,31 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
 
   const { setFileName } = useGlobalState((state) => {
     return {
-      setFileName: state.setFileName
+      setFileName: state.setFileName,
+    };
+  });
+
+  const parseAndLoad = (arrayBuffer: ArrayBuffer, fileName: string) => {
+    if (arrayBuffer.byteLength % 16 !== 0) {
+      alert('Not an efficient byte size');
+      return;
     }
-  })
+
+    const floatBuffer = new Float32Array(arrayBuffer);
+    const points = [];
+    for (let i = 0; i < floatBuffer.length; i += 4) {
+      points.push({
+        x: floatBuffer[i],
+        y: floatBuffer[i + 2],
+        z: -floatBuffer[i + 1],
+        label: fileName,
+      });
+    }
+
+    setFileName(fileName);
+
+    onLoad(points);
+  };
 
   // handlePLYFielUpload
 
@@ -32,40 +54,20 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
     const file = files[0];
     if (!file) return;
 
-    if (!file.name.endsWith(".bin")) {
+    if (!file.name.endsWith('.bin')) {
       alert('Please upload a .bin file.');
       return;
     }
 
     const fileName = file.name.replace(/\.[^/.]+$/, '');
 
-    setFileName(fileName)
-
     const arrayBuffer = await file.arrayBuffer();
-
-    if (arrayBuffer.byteLength % 16 !== 0) {
-      alert('File does not match expected point cloud format.');
-      return;
-    }
-
-    const floatBuffer = new Float32Array(arrayBuffer);
-
-    const points: PointArray = [];
-
-    for (let i = 0; i < floatBuffer.length; i += 4) {
-      points.push({
-        x: floatBuffer[i],
-        y: floatBuffer[i + 2],
-        z: -floatBuffer[i + 1],
-        label: fileName
-      })
-    }
 
     // let minY = Infinity, maxY = -Infinity;
     // points.forEach(p => { minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y) })
 
+    parseAndLoad(arrayBuffer, fileName);
 
-    onLoad(points)
     // const url = URL.createObjectURL(file);
     // const plyLoader = new PLYLoader();
     // plyLoader.load(
@@ -92,16 +94,28 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
     // );
   };
 
+  const loadSample = async () => {
+    const res = await fetch('/samples/000000.bin');
+    const arrayBuffer = await res.arrayBuffer();
+    parseAndLoad(arrayBuffer, 'sample');
+  };
+
+  useEffect(() => {
+    loadSample();
+  }, []);
+
   return (
-    <FileUploaderStyleContainer htmlFor="file-input">
-      <p>Upload .bin File</p>
-      <input
-        type="file"
-        id="file-input"
-        accept=".bin"
-        ref={inputRef}
-        onChange={handleBinFileUpload}
-      />
+    <FileUploaderStyleContainer>
+      <label htmlFor="file-input">
+        <p>Upload .bin File</p>
+        <input
+          type="file"
+          id="file-input"
+          accept=".bin"
+          ref={inputRef}
+          onChange={handleBinFileUpload}
+        />
+      </label>
     </FileUploaderStyleContainer>
   );
 };
