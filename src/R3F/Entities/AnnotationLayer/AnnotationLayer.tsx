@@ -14,13 +14,17 @@ const AnnotationLayer = () => {
         <Fragment>
 
             {Object.keys(annotations).length > 0 && (
-                Object.values(annotations).map((box) => (
+                Object.values(annotations).map((box) => {
 
-                    <mesh key={box.id} position={[box.center.x, box.center.y, box.center.z]} >
-                        <boxGeometry args={[box.size.x, box.size.y, box.size.z]} />
-                        <meshBasicMaterial wireframe color="#00ff00" />
-                    </mesh>
-                ))
+                    console.log(box.color)
+                    return (
+
+                        <mesh key={box.id} position={[box.center.x, box.center.y, box.center.z]} >
+                            <boxGeometry args={[box.size.x, box.size.y, box.size.z]} />
+                            <meshBasicMaterial wireframe color={box.color} />
+                        </mesh>
+                    )
+                })
             )}
         </Fragment>
     )

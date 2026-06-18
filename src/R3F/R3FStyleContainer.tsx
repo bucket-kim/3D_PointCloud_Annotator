@@ -6,6 +6,7 @@ const R3FStyleContainer = styled.div`
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 `;
 
 export default R3FStyleContainer;

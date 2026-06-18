@@ -72,9 +72,12 @@ const R3FModule = ({ set, get }: globalStateApiType) => {
 
       const id = Object.keys(annotations).length
 
+      const color = `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')}`
+
       const newAnnotation: Annotation = {
         id,
         label,
+        color,
         center: boundingBox.center,
         size: boundingBox.size,
         pointIndices: [...selectedIndices]

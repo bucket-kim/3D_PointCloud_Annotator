@@ -1,4 +1,6 @@
 import { ChangeEvent, FC, useRef } from 'react';
+import { FileUploaderStyleContainer } from './FileUploaderStyleContainer';
+import { useGlobalState } from '../State/useGlobalState';
 
 interface pointData {
   x: number;
@@ -16,6 +18,12 @@ interface FileUploaderType {
 const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const { setFileName } = useGlobalState((state) => {
+    return {
+      setFileName: state.setFileName
+    }
+  })
+
   // handlePLYFielUpload
 
   const handleBinFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +38,8 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
     }
 
     const fileName = file.name.replace(/\.[^/.]+$/, '');
+
+    setFileName(fileName)
 
     const arrayBuffer = await file.arrayBuffer();
 
@@ -83,13 +93,16 @@ const FileUploader: FC<FileUploaderType> = ({ onLoad }) => {
   };
 
   return (
-    <input
-      type="file"
-      id="file-input"
-      accept=".bin"
-      ref={inputRef}
-      onChange={handleBinFileUpload}
-    />
+    <FileUploaderStyleContainer htmlFor="file-input">
+      <p>Upload .bin File</p>
+      <input
+        type="file"
+        id="file-input"
+        accept=".bin"
+        ref={inputRef}
+        onChange={handleBinFileUpload}
+      />
+    </FileUploaderStyleContainer>
   );
 };
 

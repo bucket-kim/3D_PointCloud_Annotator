@@ -9,6 +9,7 @@ export type Point = {
 export type Annotation = {
   id: number;
   label: string;
+  color: string;
   center: { x: number, y: number, z: number };
   size: { x: number, y: number, z: number };
   pointIndices: number[]

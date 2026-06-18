@@ -11,7 +11,7 @@ const BoundingBox: FC<BoundingBoxProps> = ({ center, size }) => (
 
   >
     <boxGeometry args={[size.x, size.y, size.z]} />
-    <meshBasicMaterial wireframe color="#000000" />
+    <meshBasicMaterial wireframe color="#00ff22" />
   </mesh>
 );
 

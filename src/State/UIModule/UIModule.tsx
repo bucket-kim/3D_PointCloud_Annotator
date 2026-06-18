@@ -6,6 +6,11 @@ const UIModule = ({ set }: globalStateApiType) => {
     setLoaded: (loaded: boolean) => {
       set({ loaded: loaded });
     },
+
+    fileName: "",
+    setFileName: (fileName: string) => {
+      set({ fileName: fileName })
+    }
   };
 };
 
