@@ -43,6 +43,36 @@ export const HeaderStyleContainer = styled.div`
           color: #6d7278;
         }
       }
+
+      .file-info-container {
+        display: flex;
+        align-items: center;
+        gap: clamp(0rem, 0.01171303075 * var(--aspect-ratio-scale), 1rem);
+        margin-left: clamp(
+          0rem,
+          0.04685212299 * var(--aspect-ratio-scale),
+          4rem
+        );
+        p,
+        span {
+          font-size: clamp(0rem, 0.014 * var(--aspect-ratio-scale), 1rem);
+          color: white;
+        }
+        .circle {
+          width: clamp(
+            0rem,
+            0.007027818448 * var(--aspect-ratio-scale),
+            0.6rem
+          );
+          height: clamp(
+            0rem,
+            0.007027818448 * var(--aspect-ratio-scale),
+            0.6rem
+          );
+          background-color: #1fe11f;
+          border-radius: 99px;
+        }
+      }
     }
 
     .header-right-container {

@@ -6,7 +6,7 @@ import { HeaderStyleContainer } from './HeaderStyleContainer';
 import Tips from './Tips/Tips';
 
 const Header = () => {
-  const { undo, redo, past, future, points, setPoints, annotations } =
+  const { undo, redo, past, future, points, setPoints, annotations, fileName } =
     useGlobalState((state) => {
       return {
         undo: state.undo,
@@ -16,6 +16,7 @@ const Header = () => {
         points: state.points,
         setPoints: state.setPoints,
         annotations: state.annotations,
+        fileName: state.fileName,
       };
     }, shallow);
 
@@ -45,6 +46,8 @@ const Header = () => {
     URL.revokeObjectURL(url);
   };
 
+  const formatWithCommas = (num: number): string => num.toLocaleString('en-US');
+
   return (
     <HeaderStyleContainer>
       <main>
@@ -56,6 +59,13 @@ const Header = () => {
             <h3>Point Annotation</h3>
             <p>3D point labeling studio</p>
           </div>
+          {fileName && points && (
+            <div className="file-info-container">
+              <p>{fileName}.bin</p>
+              <span> {formatWithCommas(points.length)} points</span>
+              <div className="circle" />
+            </div>
+          )}
         </div>
 
         <div className="header-right-container">
